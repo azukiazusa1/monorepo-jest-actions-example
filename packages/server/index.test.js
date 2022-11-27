@@ -1,4 +1,4 @@
-const { add } = require("./index.js");
+const { add, divide } = require("./index.js");
 
 describe("add", () => {
   it("adds two numbers", () => {
