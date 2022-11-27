@@ -45,6 +45,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           # モノレポのルートで install してるのでそれぞれのディレクトリではインストール不要
           skip-step: install
+          # ワークフローを実行するディレクトリを指定する
           working-directory: ${{ matrix.path }}
           test-script: yarn test
           package-manager: yarn
