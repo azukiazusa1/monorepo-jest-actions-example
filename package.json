@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "monorepo-jest-actions-example",
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "prettier": "^2.7.1",
+    "wsrun": "^5.2.4"
+  },
+  "scripts": {
+    "test": "wsrun test"
+  }
+}
