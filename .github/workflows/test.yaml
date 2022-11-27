@@ -1,47 +1,4 @@
-name: CI
-on:
-    pull_request:
-        branches: [main]
-    workflow_dispatch:
-jobs:
-    generate_matrix:
-        name: Get changed packages
-        runs-on: ubuntu-latest
-        outputs:
-            names: ${{ steps.changed_packages.outputs.names }}
-            paths: ${{ steps.changed_packages.outputs.paths }}
-            empty: ${{ steps.changed_packages.outputs.empty }}
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-
-            - name: Find changed packages
-              id: changed_packages
-              uses: alexshukel/get-changed-workspaces-action@v1.0.0
-    coverage:
-        name: Coverage report
-        if: ${{ !fromJson(needs.generate_matrix.outputs.empty) }}
-        needs: [generate_matrix]
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                path: ${{ fromJson(needs.generate_matrix.outputs.paths) }}
-        steps:
-            - uses: actions/checkout@v1
-
-            - name: Use Node 14.x
-              uses: actions/setup-node@v1
-              with:
-                  node-version: 14.x
-
-            - name: Install npm 17.x
-              run: npm i -g npm@latest
-
-            - name: Installing dependencies
-              run: npm install
-
-            - uses: artiomtr/jest-coverage-report-action@v2
-              with:name: CI
+name: Coverage Report
 on:
     pull_request:
         branches: [main]
