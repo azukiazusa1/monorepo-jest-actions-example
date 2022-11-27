@@ -4,11 +4,10 @@ on:
     branches: [main]
   workflow_dispatch:
 jobs:
-  # マトリックス戦略を使用するために、
+  # マトリックス戦略を使用するために、変更された packages を取得する
   generate_matrix:
     name: Get changed packages
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     outputs:
       names: ${{ steps.changed_packages.outputs.names }}
       paths: ${{ steps.changed_packages.outputs.paths }}
@@ -22,11 +21,12 @@ jobs:
         uses: alexshukel/get-changed-workspaces-action@v1.0.0
   coverage:
     name: Coverage report
-    if: ${{ !fromJson(needs.generate_matrix.outputs.empty) }}
+    # このジョブを実行するためには generate_matrix が正常に完了している必要がある
     needs: [generate_matrix]
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        # 変更された packages をマトリックス戦略に渡す
         path: ${{ fromJson(needs.generate_matrix.outputs.paths) }}
     steps:
       - uses: actions/checkout@v3
@@ -43,6 +43,7 @@ jobs:
       - uses: artiomtr/jest-coverage-report-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          # モノレポのルートで install してるのでそれぞれのディレクトリではインストール不要
           skip-step: install
           working-directory: ${{ matrix.path }}
           test-script: yarn test
