@@ -1,3 +1,4 @@
+// add some comments...
 module.exports = {
   plugins: ["simple-import-sort", "unused-imports", "@typescript-eslint"],
   extends: [
