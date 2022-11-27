@@ -21,6 +21,7 @@ jobs:
         uses: alexshukel/get-changed-workspaces-action@v1.0.0
   coverage:
     name: Coverage report
+    if: ${{ !fromJson(needs.generate_matrix.outputs.empty) }}
     # このジョブを実行するためには generate_matrix が正常に完了している必要がある
     needs: [generate_matrix]
     runs-on: ubuntu-latest
