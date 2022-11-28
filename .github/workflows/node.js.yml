@@ -1,0 +1,32 @@
+name: Correct Coverage
+
+on: workflow_dispatch
+  
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        path: 
+          - ./packages/front
+          - ./packages/server
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - run: yarn install
+    - run: yarn test --ci --json --coverage --testLocationInResults --outputFile=report.base.json
+      working-directory: ${{ matrix.path }}
+    - uses: actions/checkout@v2
+    - run: |   
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "generated"
+          git push
