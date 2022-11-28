@@ -13,5 +13,8 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-simple-import-sort": "^8.0.0",
     "eslint-plugin-unused-imports": "^2.0.0"
+  },
+  "scripts": {
+    "test": "exit 0"
   }
 }
