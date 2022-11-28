@@ -21,6 +21,7 @@ jobs:
         uses: alexshukel/get-changed-workspaces-action@v1.0.0
   coverage:
     name: Coverage report
+    if: ${{ !fromJson(needs.generate_matrix.outputs.empty) }}
     # このジョブを実行するためには generate_matrix が正常に完了している必要がある
     needs: [generate_matrix]
     runs-on: ubuntu-latest
@@ -39,8 +40,14 @@ jobs:
 
       - name: Installing dependencies
         run: yarn install
+        
+      - name: "Check file existence"
+        uses: andstor/file-existence-action@v2
+        with:
+          files: ${{ matrix.path }}/report.base.json
 
       - uses: artiomtr/jest-coverage-report-action@v2
+        if: steps.check_files.outputs.files_exists == 'true'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           # モノレポのルートで install してるのでそれぞれのディレクトリではインストール不要
