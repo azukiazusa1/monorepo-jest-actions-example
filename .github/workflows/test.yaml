@@ -43,6 +43,7 @@ jobs:
         
       - name: "Check file existence"
         uses: andstor/file-existence-action@v2
+        id: check_files
         with:
           files: ${{ matrix.path }}/report.base.json
 
@@ -56,3 +57,4 @@ jobs:
           working-directory: ${{ matrix.path }}
           test-script: yarn test
           package-manager: yarn
+          base-coverage-file: report.base.json
