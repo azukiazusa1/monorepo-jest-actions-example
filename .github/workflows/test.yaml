@@ -57,4 +57,5 @@ jobs:
           working-directory: ${{ matrix.path }}
           test-script: yarn test
           package-manager: yarn
-          base-coverage-file: report.base.json
+          coverage-file: report.json
+          base-coverage-file: report.json
