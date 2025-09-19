@@ -5,6 +5,7 @@ export const Counter = () => {
   return (
     <div>
       <button onClick={() => setCount(count + 1)}>Increment</button>
+      <button onClick={() => setCount(count - 1)}>Decrement</button>
       <p>Count: {count}</p>
     </div>
   );
